@@ -12,8 +12,27 @@ export const data = {
         title: "Learn CSS",
       },
     ],
+    addNewTaskDialog: {
+      isOpen: false,
+      error: null,
+    },
   },
 };
+
+export function setError(error) {
+  data.todolist.addNewTaskDialog.error = error;
+  notifySubscriber();
+}
+
+export function openAddTaskDialog() {
+  data.todolist.addNewTaskDialog.isOpen = true;
+  notifySubscriber();
+}
+
+export function closeAddTaskDialog() {
+  data.todolist.addNewTaskDialog.isOpen = false;
+  notifySubscriber();
+}
 
 let notifySubscriber = () => {
   console.warn("No data change subscriber");
@@ -27,14 +46,19 @@ function createUniqId() {
   return Math.floor(Math.random() * 100000);
 }
 
-export function createTask() {
-  const newTask = {
-    id: createUniqId(),
-    title: "-----------",
-  };
-  data.todolist.tasks.push(newTask);
-
-  notifySubscriber();
+export function createTask(newTitle) {
+  if (newTitle.trim().length > 0) {
+    const newTask = {
+      id: createUniqId(),
+      title: newTitle,
+    };
+    data.todolist.tasks.push(newTask);
+    notifySubscriber();
+    return true;
+  } else {
+    setError("emptty input");
+    return false;
+  }
 }
 
 export function deleteTask(id) {

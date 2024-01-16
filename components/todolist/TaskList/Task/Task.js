@@ -1,19 +1,11 @@
-import { deleteTask } from "../../../../data/data.js";
+import { DeleteButton } from "./DeleteButton/DeleteButton.js";
 
 export function Task(task) {
   const container = document.createElement("li");
   container.append(task.title);
 
-  const deleteButtonElement = document.createElement("button");
-  deleteButtonElement.append("❌");
-
-  deleteButtonElement.addEventListener("click", () => {
-    deleteTask(task.id);
-  });
-
+  const deleteButtonElement = DeleteButton(task.id);
   container.append(deleteButtonElement);
 
   return container;
 }
-
-export function DeleteButton() {}
